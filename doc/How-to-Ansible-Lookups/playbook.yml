@@ -1,0 +1,68 @@
+# To run this...
+
+#    export ANSIBLE_LOOKUP_PLUGINS=`pwd`
+
+- hosts:
+   - localhost
+  gather_facts: False
+  connection: local
+
+  vars:
+      cats_as_list: "{{ lookup('cats', 'list' )}}"
+      cats_as_lol: "{{ lookup('cats', 'list-of-lists' )}}"
+
+  tasks:
+    # - action: template src=template.j2 dest=t.out
+
+    # msg is just a string of words separated by commas.
+    - name: "Lookup returns a list; we get a CSV string"
+      debug:
+        msg: "{{ lookup('cats', 'list') }}"
+
+    # msg is just a string of words separated by commas.
+    - name: "Lookup returns a list of lists; we get a list"
+      debug:
+        msg: "{{ lookup('cats', 'list-of-lists') }}"
+
+    # if we have several "creds", we should get a list!
+    # we don't - until the lookup returns a LIST of LISTS.
+    - name: "Lookup in a var, as a list; we get a CSV string"
+      debug:
+        var: cats_as_list
+
+    - name: "Lookup in a var, as a list of lists; we get a list"
+      debug:
+        var: cats_as_lol
+
+    # what if we want a single item?
+    - name: "Lookup returns a list with one item; we get a string"
+      debug:
+        msg: "{{ lookup('cats', 'list', 'one-item') }}"
+
+    - name: "Lookup returns a list-of-lists with one item; we get a list"
+      debug:
+        msg: "{{ lookup('cats', 'list-of-lists', 'one-item') }}"
+
+    # Try passing these into a template
+    - name: "use a template"
+      template:
+        src: template.j2
+        dest: t.out
+
+    #
+    # Part 2: dict-based data
+    - name: "Lookup returns a list of dicts"
+      debug:
+        msg: "{{ lookup('dogs', 'list') }}"
+
+    - name: "Lookup returns a list of dicts; only one item"
+      debug:
+        msg: "{{ lookup('dogs', 'list', 'one-item') }}"
+
+    - name: "Lookup returns a list of list of dicts"
+      debug:
+        msg: "{{ lookup('dogs', 'list-of-lists') }}"
+
+    - name: "Lookup returns a list of list of dicts; only one item"
+      debug:
+        msg: "{{ lookup('dogs', 'list-of-lists', 'one-item') }}"

@@ -1,0 +1,29 @@
+#-- result from lookup('cats', 'list')
+{% for k in lookup('cats', 'list')  %}
+        {{ k }}
+{% endfor %}
+
+#-- result from lookup('cats', 'list') | list
+{% for k in lookup('cats', 'list') | list  %}
+        {{ k }}
+{% endfor %}
+
+#-- result from lookup('cats', 'list-of-lists')
+{% for k in lookup('cats', 'list-of-lists')  %}
+        {{ k }}
+{% endfor %}
+
+#-- result from lookup('cats', 'list-of-lists') | list
+{% for k in lookup('cats', 'list-of-lists') | list  %}
+        {{ k }}
+{% endfor %}
+
+#-- result from  lookup('cats', 'list').split(',')
+{% for k in lookup('cats', 'list').split(',')  %}
+        {{ k }}
+{% endfor %}
+
+#-- A normal Jinja2 list
+{% for k in  ['uno', 'dos', 'tres' ] %}
+        {{ k }}
+{% endfor %}
